@@ -36,6 +36,11 @@ app.get('/*', (req, res) => {
     } );
 });
 
+//ROUTES
+app.use('/api/auth', require('./src/routes/auth.route'));
+app.use('/api/categories', require('./src/routes/categories.route'));
+app.use('/api/products', require('./src/routes/products.route'));
+
 
 const PORT = process.env.PORT || 4000 ;
 app.listen(PORT, () => {

@@ -42,10 +42,13 @@ const dbMysqlConnection = () => {
         //tables
         db.role = require('../models/role.model')(sequelize, Sequelize);
         db.user = require('../models/user.model')(sequelize, Sequelize, db.role);
+        db.categories = require('../models/categories.model')(sequelize, Sequelize);
+        db.products = require('../models/products.model')(sequelize, Sequelize, db.categories);
 
         //relations
-        db.user.belongsTo(db.role, { foreingKey : 'role_id' });
-        db.role.hasMany(db.user, { foreingKey: 'role_id' });
+        db.user.belongsTo(db.role, { foreignKey : 'role_id' });
+        db.role.hasMany(db.user, { foreignKey: 'role_id' });
+        db.products.belongsTo(db.categories, { foreignKey: 'category_id' });
 
         return db;
         

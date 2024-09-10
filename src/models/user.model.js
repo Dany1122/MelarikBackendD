@@ -10,7 +10,11 @@ module.exports = (sequelize, Sequelize, Role) => {
             type : Sequelize.STRING
         },
         role_id: {
-            type : Sequelize.INTEGER
+            type : Sequelize.INTEGER,
+            // references : {
+            //     model : Role,
+            //     key : 'id'
+            // }
         },
         active : {
             type : Sequelize.BOOLEAN,
