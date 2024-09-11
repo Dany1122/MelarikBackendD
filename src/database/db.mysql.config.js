@@ -44,11 +44,21 @@ const dbMysqlConnection = () => {
         db.user = require('../models/user.model')(sequelize, Sequelize, db.role);
         db.categories = require('../models/categories.model')(sequelize, Sequelize);
         db.products = require('../models/products.model')(sequelize, Sequelize, db.categories);
+        db.cart = require('../models/cart.model')(sequelize, Sequelize, db.user);
+        db.cartItem = require('../models/cart_item.model')(sequelize, Sequelize, db.cart, db.products);
 
         //relations
         db.user.belongsTo(db.role, { foreignKey : 'role_id' });
         db.role.hasMany(db.user, { foreignKey: 'role_id' });
         db.products.belongsTo(db.categories, { foreignKey: 'category_id' });
+
+        db.cart.belongsTo(db.user, { foreignKey: 'user_id' });
+        db.user.hasOne(db.cart, { foreignKey: 'user_id' });
+        db.cartItem.belongsTo(db.cart, { foreignKey: 'cart_id' });
+        db.cart.hasMany(db.cartItem, { foreignKey: 'cart_id' });
+
+        db.cartItem.belongsTo(db.products, { foreignKey: 'product_id' });
+        db.products.hasMany(db.cartItem, { foreignKey: 'product_id' });
 
         return db;
         

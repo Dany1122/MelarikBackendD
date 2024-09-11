@@ -7,9 +7,13 @@ module.exports = async ( db ) => {
     const User = db.user;
     const Categories = db.categories
     const Products = db.products;
+    const Cart = db.cart;
+    const CartItem = db.cartItem;
 
     Role.findOrCreate({ where : { id : 1}, defaults : { id : 1, role_dsc: 'Admin', active : true, deleted : false}});
+    Role.findOrCreate({ where : { id : 2}, defaults : { id : 2, role_dsc: 'User', active : true, deleted : false}});
     User.findOrCreate({ where : { id : 1}, defaults : { id : 1, name : 'Admin', email : 'admin@admin.com' , password : 'admin123', role_id : TypeRole.ADMIN, active : true}});
+    User.findOrCreate({ where : { id : 100}, defaults : { id : 100, name : 'Erick Ramos', email : 'erick@erick.com' , password : 'erick123', role_id : TypeRole.USER, active : true}});
     Categories.findOrCreate({ where : { id : 1}, defaults : { id: 1, name_category : 'Prebases' }});
     Categories.findOrCreate({ where : { id : 2}, defaults : { id: 2, name_category : 'Bases de maquillaje' }});
     Categories.findOrCreate({ where : { id : 3}, defaults : { id: 3, name_category : 'Correctores' }});
@@ -26,4 +30,7 @@ module.exports = async ( db ) => {
     Products.findOrCreate({ where : { id : 7}, defaults : { id: 7, name_product : 'Real Techniques, Everyday Essentials, Set de Brochas de Maquillaje con Esponja Multifuncional,', description : 'Kit esencial. El set everyday essentials de real techniques es lo que necesitas para dominar tu look en todos los sentidos, maquillar tu rostro, mejillas y ojos uniformemente y lucir mejor que nunca sea cual sea la ocasión', price : 365, stock : 100, url_image: 'https://m.media-amazon.com/images/I/61U76RevvIL._AC_SL1400_.jpg', category_id : typeCategory.BROCHAS_ESPONJAS }});
     Products.findOrCreate({ where : { id : 8}, defaults : { id: 8, name_product : 'HANDAIYAN - Mousse Liquid Blush - 6 Colors', description : '', price : 96, stock : 100, url_image: 'https://d1flfk77wl2xk4.cloudfront.net/Assets/59/042/XXL_p0208104259.jpg', category_id : typeCategory.RUBORES }});
 
+    // Cart.findOrCreate({ where : { id : 1}, defaults : { id: 1, user_id : 1}});
+    // CartItem.findOrCreate({ where : { id : 1}, defaults : { id: 1, cart_id : 1, product_id : 1, quantity : 1}});
+    // CartItem.findOrCreate({ where : { id : 2}, defaults : { id: 2, cart_id : 1, product_id : 2, quantity : 1}});
 }
