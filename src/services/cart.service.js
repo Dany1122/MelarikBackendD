@@ -140,9 +140,35 @@ const clearCart = async (userId) => {
     }
 };
 
+const removeProductCartById = async (userId, productId) => {
+    try {
+        const cart = await Cart.findOne({
+            where: { user_id: userId }
+        });
+
+        if (!cart) {
+            throw new Error('Cart not found');
+        }
+
+        const cartItem = await cartItemDb.findOne({
+            where: { cart_id: cart.id, product_id: productId }
+        });
+
+        if (!cartItem) {
+            throw new Error('Product not found in cart');
+        }
+
+        await cartItem.destroy();
+        return cartItem;
+    } catch (error) {
+        throw error;
+    }
+};
+
 module.exports = {
     getCartByUserId,
     addProuctToCart,
     decreaseProductInCart,
-    clearCart
+    clearCart,
+    removeProductCartById
 }

@@ -99,9 +99,46 @@ const clearCart = async (req, res, next) => {
     }
 };
 
+const removeProductCartById = async (req, res, next) => {
+    try {
+        const {userId, productId } = req.body
+
+        await cartService.removeProductCartById(userId, productId);
+        return httpUtilsService.httpResponse(res, HTTP_STATUS.OK, true, {
+            msg: 'Producto eliminado del carrito correctamente'
+        });
+    } catch (error) {
+        console.log('error', error);
+
+        if (error.message === 'Cart not found') {
+            return httpUtilsService.httpResponse(res, HTTP_STATUS.NOT_FOUND, false, {
+                errors: [{
+                    msg: 'Carrito no encontrado'
+                }]
+            });
+            
+        }
+
+        if (error.message === 'Product not found in cart') {
+            return httpUtilsService.httpResponse(res, HTTP_STATUS.NOT_FOUND, false, {
+                errors: [{
+                    msg: 'Producto no encontrado en el carrito'
+                }]
+            });
+        }
+
+        httpUtilsService.httpResponse(res, HTTP_STATUS.INTERNAL_SERVER_ERROR, false, {
+            errors: [{
+                msg: 'Por favor hable con el administrador'
+            }]
+        });
+    }
+};
+
 module.exports = {
     getCartByUserId,
     addProuctToCart,
     decreaseProductInCart,
-    clearCart
+    clearCart,
+    removeProductCartById
 }

@@ -12,7 +12,16 @@ router.post('/getAll',
         validateJWT
     ],
      getAllProducts
-    );
+);
+
+router.post('/getByCategory',
+    [
+        validateJWT,
+        check('category_id', 'El id de la categoria es obligatorio').not().isEmpty(),
+        fieldValidator
+    ],
+    getProductByCategory
+);
 
 
 

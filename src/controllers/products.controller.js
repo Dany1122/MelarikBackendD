@@ -36,13 +36,14 @@ const getProductById = async (req, res) => {
 
 const getProductByCategory = async (req, res) => {
     try {
-        const { category_id } = req.params;
+        const { category_id } = req.body;
         const products = await productsService.getProductByCategory(category_id);
         return httpUtilsService.httpResponse(res, HTTP_STATUS.OK, true, {
             msg: 'Productos obtenidos correctamente',
             products
         });
     } catch (error) {
+        
         httpUtilsService.httpResponse(res, HTTP_STATUS.INTERNAL_SERVER_ERROR, false, {
             errors: [{
                 msg: 'Por favor hable con el administrador'
