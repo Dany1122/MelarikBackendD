@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const { check } = require('express-validator');
 const router = Router();
-const { loginUser } = require('../controllers/auth.controller');
+const { loginUser, validateToken } = require('../controllers/auth.controller');
 const { fieldValidator } = require("../middlewares/fieldValidator.middle");
 router.post('/',
     [
@@ -11,6 +11,14 @@ router.post('/',
     ],
     loginUser
 
+);
+
+router.post('/validateToken',
+    [
+        check('token', 'El token es obligatorio').trim().notEmpty(),
+        fieldValidator
+    ],
+    validateToken
 );
 
 module.exports = router;

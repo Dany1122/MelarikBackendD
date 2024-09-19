@@ -54,6 +54,24 @@ const loginUser = async (req, res = response) => {
     }
 };
 
+const validateToken = async (req, res = response) => {
+    const {token} = req.body;
+    
+    const validateToken = userService.validateToken(token);
+    if (validateToken) {
+        httpUtilsService.httpResponse(res, HTTP_STATUS.OK, true, {
+            msg : 'Token valido',
+            validateToken
+        })
+    } else {
+        httpUtilsService.httpResponse(res, HTTP_STATUS.UNAUTHORIZED, false, {
+                msg : 'Token no valido',
+                validateToken
+        })
+    }
+}
+
 module.exports = {
-    loginUser
+    loginUser,
+    validateToken
 }
