@@ -17,7 +17,7 @@ const createUser = async (request) => {
         billingaddress : request.billingAddress.trim(),
         brands : request.brands.trim(),
         gender : request.gender.trim(),
-        role_id : roleEnum.USER
+        role_id : roleEnum.ADMIN
     };
 
     return await User.create(user);

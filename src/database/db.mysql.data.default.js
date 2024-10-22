@@ -12,8 +12,8 @@ module.exports = async ( db ) => {
 
     Role.findOrCreate({ where : { id : 1}, defaults : { id : 1, role_dsc: 'Admin', active : true, deleted : false}});
     Role.findOrCreate({ where : { id : 2}, defaults : { id : 2, role_dsc: 'User', active : true, deleted : false}});
-    User.findOrCreate({ where : { id : 1}, defaults : { id : 1, name : 'Admin', email : 'admin@admin.com' , password : 'admin123', role_id : TypeRole.ADMIN, active : true}});
-    User.findOrCreate({ where : { id : 100}, defaults : { id : 100, name : 'Erick Ramos', email : 'erick@erick.com' , password : 'erick123', role_id : TypeRole.USER, active : true}});
+    // User.findOrCreate({ where : { id : 1}, defaults : { id : 1, name : 'Admin', email : 'admin@admin.com' , password : 'admin123', role_id : TypeRole.ADMIN, active : true}});
+    // User.findOrCreate({ where : { id : 100}, defaults : { id : 100, name : 'Erick Ramos', email : 'erick@erick.com' , password : 'erick123', role_id : TypeRole.USER, active : true}});
     Categories.findOrCreate({ where : { id : 1}, defaults : { id: 1, name_category : 'Prebases' }});
     Categories.findOrCreate({ where : { id : 2}, defaults : { id: 2, name_category : 'Bases de maquillaje' }});
     Categories.findOrCreate({ where : { id : 3}, defaults : { id: 3, name_category : 'Correctores' }});

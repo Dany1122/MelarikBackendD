@@ -11,7 +11,7 @@ const path = require('path');
 
 //database sync
 const db = dbMysqlConnection();
-db.sequelize.sync({force : true}).then(() => {
+db.sequelize.sync({alter : true}).then(() => {
     // require('./src/database/db.mysql.data.default')(db);
 }); 
 
