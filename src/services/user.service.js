@@ -2,14 +2,22 @@ const { dbMysqlConnection } = require("../database/db.mysql.config");
 const User = dbMysqlConnection().user;
 const Role = dbMysqlConnection().role;
 const jwt = require('jsonwebtoken');
+const roleEnum = require("../enums/role.enum");
 require('dotenv').config();
 
 const createUser = async (request) => {
     const user = {
         name : request.name.trim(),
+        lastname : request.lastname.trim(),
+        phone : request.phone.trim(),
+        age : request.age,
         email : request.email.trim(),
         password : request.password,
-        role_id : request.role_id
+        address : request.address.trim(),
+        billingaddress : request.billingAddress.trim(),
+        brands : request.brands.trim(),
+        gender : request.gender.trim(),
+        role_id : roleEnum.USER
     };
 
     return await User.create(user);
@@ -40,6 +48,7 @@ const validateToken = (token) => {
         return 0; // Token inválido
     }
 };
+
 
 module.exports = {
     createUser,

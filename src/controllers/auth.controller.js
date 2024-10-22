@@ -23,7 +23,7 @@ const loginUser = async (req, res = response) => {
         }
 
         //validate password
-        const validPassword = user.password === params.password
+        const validPassword = bcrypt.compareSync(params.password, user.password);
         console.log(params.password,user.password);
         
 
@@ -71,7 +71,59 @@ const validateToken = async (req, res = response) => {
     }
 }
 
+const createUser = async (req, res = response) => {
+    const { name, lastname, email, passwordNew, phone, age, address, billingAddress, brands, gender, role_id } = req.body;
+    try {
+        let user = await userService.getUserByEmail(email);
+
+        if (user) {
+            return httpUtilsService.httpResponse(res, HTTP_STATUS.BAD_REQUEST, false, {
+                errors: [{
+                    msg: 'El correo electrónico ya existe'
+                }]
+            });
+        }
+
+        const salt = bcrypt.genSaltSync();
+        const hashedPassword = bcrypt.hashSync(passwordNew, salt);
+
+        const userData = {
+            name,
+            lastname,
+            email,
+            password: hashedPassword,
+            phone,
+            age,
+            address,
+            billingAddress,
+            brands,
+            gender,
+            role_id
+        };
+
+        user = await userService.createUser(userData);
+
+        const token = await generateJWT(user.id, user.name);
+
+        return httpUtilsService.httpResponse(res, HTTP_STATUS.OK, true, {
+            uid: user.id,
+            name: user.name,
+            token
+        });
+
+    } catch (error) {
+        console.log(error);
+        
+        return httpUtilsService.httpResponse(res, HTTP_STATUS.INTERNAL_SERVER_ERROR, false, {
+            errors: [{
+                msg: 'Por favor hable con el administrador'
+            }]
+        });
+    }
+};
+
 module.exports = {
     loginUser,
-    validateToken
+    validateToken,
+    createUser
 }
