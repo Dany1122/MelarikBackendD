@@ -49,10 +49,17 @@ const validateToken = (token) => {
     }
 };
 
+const getUserById = async (userId) => {
+    return await User.findByPk(userId, {
+        attributes: ['id', 'name', 'lastname', 'email', 'phone', 'age', 'address', 'billingaddress', 'brands', 'gender']
+    });
+};
+
 
 module.exports = {
     createUser,
     getUserByEmail,
     getAllUsers,
-    validateToken
+    validateToken,
+    getUserById
 }

@@ -34,6 +34,32 @@ const createOrder = async (userId, orderData) => {
             };
         });
 
+         // Calculate delivery cost
+         let deliveryCost = 0;
+         if (orderData.deliveryType === 'DHL') {
+             deliveryCost = 150; // Example cost for DHL
+         } else if (orderData.deliveryType === 'FedEx') {
+             deliveryCost = 200; // Example cost for FedEx
+         } else if (orderData.deliveryType === 'Estafeta') {
+                deliveryCost = 120; // Example cost for Estafeta
+         } else if (orderData.deliveryType === 'Express') {
+            deliveryCost = 200; // Example cost for UPS
+         }
+         totalPrice += deliveryCost;
+
+         // Apply coupon discount
+        if (orderData.coupon) {
+            let discount = 0;
+            if (orderData.coupon === '5%') {
+                discount = 0.05;
+            } else if (orderData.coupon === '10%') {
+                discount = 0.10;
+            } else if (orderData.coupon === '15%') {
+                discount = 0.15;
+            }
+            totalPrice -= totalPrice * discount;
+        }
+
         const order = await Order.create({
             user_id: userId,
             total_price: totalPrice,
@@ -41,7 +67,16 @@ const createOrder = async (userId, orderData) => {
             full_name: orderData.full_name,
             address: orderData.address,
             country: orderData.country,
-            phone_number: orderData.phone_number
+            phone_number: orderData.phone_number,
+            delivery_type: orderData.deliveryType,
+            coupon: orderData.coupon,
+            payment_method: orderData.paymentMethod,
+            credit_card_number: orderData.creditCardNumber,
+            credit_card_expiry: orderData.creditCardExpiry,
+            credit_card_cvv: orderData.creditCardCVV,
+            delivery_option: orderData.deliveryOption,
+            name_on_card: orderData.nameOnCard
+            
         });
 
         await OrderItem.bulkCreate(orderItems.map(item => ({

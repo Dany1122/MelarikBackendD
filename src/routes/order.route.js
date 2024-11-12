@@ -13,6 +13,15 @@ router.post('/create',
         check('address', 'La dirección es obligatoria').not().isEmpty(),
         check('country', 'El país es obligatorio').not().isEmpty(),
         check('phone_number', 'El número de teléfono es obligatorio').not().isEmpty(),
+        check('deliveryType', 'El tipo de entrega es obligatorio').not().isEmpty(),
+        check('deliveryOption', 'el tipo de entrega es obligatorio').not().isEmpty(),
+        check('coupon', 'El cupón es obligatorio').not().isEmpty(),
+        check('paymentMethod', 'El método de pago es obligatorio').not().isEmpty(),
+        check('nameOnCard', 'El nombre en la tarjeta de crédito es obligatorio').not().isEmpty(),
+        check('creditCardNumber', 'El número de tarjeta de crédito es obligatorio').not().isEmpty(),
+        check('creditCardExpiry', 'La fecha de expiración de la tarjeta de crédito es obligatoria').not().isEmpty(),
+        check('creditCardCVV', 'El CVV de la tarjeta de crédito es obligatorio').not().isEmpty(),
+
         fieldValidator
     ],
     createOrder
