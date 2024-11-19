@@ -8,7 +8,7 @@ const { validateJWT } = require("../middlewares/validateJWT.middle");
 router.post(
     '/getAll',
     [
-        validateJWT,
+        // validateJWT,
         fieldValidator
     ],
     getAllCategories

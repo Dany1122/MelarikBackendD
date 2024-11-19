@@ -16,7 +16,7 @@ router.post('/getAll',
 
 router.post('/getByCategory',
     [
-        validateJWT,
+        // validateJWT,
         check('category_id', 'El id de la categoria es obligatorio').not().isEmpty(),
         fieldValidator
     ],
