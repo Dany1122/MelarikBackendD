@@ -55,11 +55,18 @@ const getUserById = async (userId) => {
     });
 };
 
+const updatePassword = async (userId, newPassword) => {
+    const user = await User.findByPk(userId);
+    user.password = newPassword;
+    return await user.save();
+};
+
 
 module.exports = {
     createUser,
     getUserByEmail,
     getAllUsers,
     validateToken,
-    getUserById
+    getUserById,
+    updatePassword
 }
