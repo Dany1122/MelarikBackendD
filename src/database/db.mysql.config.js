@@ -11,7 +11,7 @@ const dbMysqlConnection = () => {
         const sequelize = new Sequelize(DB, USER, PASSWORD, {
             host: HOST,
             dialect: 'mysql',
-            port: PORT,
+            port: Number(PORT),
             logging: false,
             pool: {
                 max: 5,
