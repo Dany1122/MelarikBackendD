@@ -2,7 +2,9 @@ const Sequelize = require('sequelize');
 
 const dbMysqlConnection = () => {
     try {
-         const DB = isDev ? process.env.DB_MYSQL_DATABASE_DEV : process.env.MYSQLDATABASE;
+        const isDev = process.env.NODE_ENV !== 'production';
+        
+        const DB = isDev ? process.env.DB_MYSQL_DATABASE_DEV : process.env.MYSQLDATABASE;
         const USER = isDev ? process.env.DB_MYSQL_USER_DEV : process.env.MYSQLUSER;
         const PASSWORD = isDev ? process.env.DB_MYSQL_PASSWORD_DEV : process.env.MYSQLPASSWORD;
         const HOST = isDev ? process.env.DB_MYSQL_HOST_DEV : process.env.MYSQLHOST;
