@@ -1,30 +1,26 @@
 const Sequelize = require('sequelize');
+const environmnet = require('../enums/environment.enum');
 
 const dbMysqlConnection = () => {
     try {
-        let DB, USER, PASSWORD, HOST, PORT;
+        
+        console.log('process.env.NODE_ENV', process.env.NODE_ENV );
 
-        if (process.env.NODE_ENV === 'production') {
-            DB = process.env.MYSQLDATABASE;
-            USER = process.env.MYSQLUSER;
-            PASSWORD = process.env.MYSQLPASSWORD;
-            HOST = process.env.MYSQLHOST;
-            PORT = process.env.MYSQLPORT;
-        } else {
-            DB = process.env.DB_MYSQL_DATABASE_DEV;
-            USER = process.env.DB_MYSQL_USER_DEV;
-            PASSWORD = process.env.DB_MYSQL_PASSWORD_DEV;
-            HOST = process.env.DB_MYSQL_HOST_DEV;
-            PORT = process.env.DB_MYSQL_PORT_DEV;
-        }
+        const isDev = process.env.NODE_ENV !== 'production';
 
-        const sequelize = new Sequelize(DB, USER, PASSWORD, {
-            host: HOST,
-            dialect: 'mysql',
+        const DB = isDev ? process.env.DB_MYSQL_DATABASE_DEV : process.env.MYSQLDATABASE;
+        const USER = isDev ? process.env.DB_MYSQL_USER_DEV : process.env.MYSQLUSER;
+        const PASSWORD = isDev ? process.env.DB_MYSQL_PASSWORD_DEV : process.env.MYSQLPASSWORD;
+        const HOST = isDev ? process.env.DB_MYSQL_HOST_DEV : process.env.MYSQLHOST;
+        const PORT = isDev ? process.env.DB_MYSQL_PORT_DEV : process.env.MYSQLPORT;
+
+        const sequelize =  new Sequelize(DB, USER, PASSWORD,{
+            host : HOST,
+            dialect : 'mysql',
             port: Number(PORT),
-            logging: false,
-            pool: {
-                max: 5,
+            operatorsAlianses:false,
+            pool : {
+                max : 5,
                 min: 0,
                 acquire: 30000,
                 idle: 10000
@@ -32,10 +28,11 @@ const dbMysqlConnection = () => {
         });
 
         const db = {};
+
         db.Sequelize = Sequelize;
         db.sequelize = sequelize;
 
-        // Models
+        //tables
         db.role = require('../models/role.model')(sequelize, Sequelize);
         db.user = require('../models/user.model')(sequelize, Sequelize, db.role);
         db.categories = require('../models/categories.model')(sequelize, Sequelize);
@@ -45,15 +42,13 @@ const dbMysqlConnection = () => {
         db.order = require('../models/order.model')(sequelize, Sequelize, db.user);
         db.orderItem = require('../models/orderItem.model')(sequelize, Sequelize, db.order, db.products);
 
-        // Relaciones
-        db.user.belongsTo(db.role, { foreignKey: 'role_id' });
+        //relations
+        db.user.belongsTo(db.role, { foreignKey : 'role_id' });
         db.role.hasMany(db.user, { foreignKey: 'role_id' });
-
         db.products.belongsTo(db.categories, { foreignKey: 'category_id' });
 
         db.cart.belongsTo(db.user, { foreignKey: 'user_id' });
         db.user.hasOne(db.cart, { foreignKey: 'user_id' });
-
         db.cartItem.belongsTo(db.cart, { foreignKey: 'cart_id' });
         db.cart.hasMany(db.cartItem, { foreignKey: 'cart_id' });
 
@@ -62,7 +57,6 @@ const dbMysqlConnection = () => {
 
         db.order.belongsTo(db.user, { foreignKey: 'user_id' });
         db.user.hasMany(db.order, { foreignKey: 'user_id' });
-
         db.orderItem.belongsTo(db.order, { foreignKey: 'order_id' });
         db.order.hasMany(db.orderItem, { foreignKey: 'order_id' });
 
@@ -70,11 +64,14 @@ const dbMysqlConnection = () => {
         db.products.hasMany(db.orderItem, { foreignKey: 'product_id' });
 
         return db;
+        
+
     } catch (error) {
-        console.error('Error en conexión a la base de datos:', error);
+        console.log('error',error);
+        
     }
 };
 
 module.exports = {
     dbMysqlConnection
-};
+}
