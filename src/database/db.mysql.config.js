@@ -5,7 +5,7 @@ const dbMysqlConnection = () => {
         let DB, USER, PASSWORD, HOST, PORT;
 
         if (process.env.NODE_ENV === 'production') {
-            DB = process.env.MYSQL_DATABASE;
+            DB = process.env.MYSQLDATABASE;
             USER = process.env.MYSQLUSER;
             PASSWORD = process.env.MYSQLPASSWORD;
             HOST = process.env.MYSQLHOST;
