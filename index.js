@@ -1,5 +1,7 @@
 const express = require('express');
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config(); // ✅ Solo carga .env en desarrollo
+}
 const cors = require('cors');
 const cron = require('node-cron');
 const { dbMysqlConnection } = require('./src/database/db.mysql.config');
