@@ -1,4 +1,4 @@
 module.exports = Object.freeze({
-    'DEV' : 'development',
-    'PROD' : 'production',
-})
+    DEVELOPMENT: 'development',
+    PRODUCTION: 'production',
+});
