@@ -14,13 +14,14 @@ const validateJWT = (req, res, next) => {
     }
 
     try {
-        const { uid, name} = jwt.verify(
+        const { uid, name, email} = jwt.verify(
             token,
             process.env.SECRET_JWT
         );
 
         req.uid = uid;
         req.name = name;
+        req.email = email;
         
     } catch (error) {
         return httpUtilsService.httpResponse(res, HTTP_STATUS.UNAUTHORIZED, false, {

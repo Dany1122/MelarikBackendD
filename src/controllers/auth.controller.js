@@ -36,10 +36,12 @@ const loginUser = async (req, res = response) => {
             })
         }
 
-        const token = await generateJWT(user.id, user.name);
+        const token = await generateJWT(user.id, user.name, user.role_id, user.email);
         httpUtilsService.httpResponse(res, HTTP_STATUS.OK,true, {
             uid : user.id,
             name : user.name,
+            role: user.role_id,
+            email: user.email,
             token
         })
 

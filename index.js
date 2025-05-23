@@ -43,7 +43,8 @@ app.use('/api/products', require('./src/routes/products.route'));
 app.use('/api/cart', require('./src/routes/cart.route'));
 app.use('/api/order', require('./src/routes/order.route'));
 app.use('/api/user', require('./src/routes/user.route'));
-
+app.use('/api/admin', require('./src/routes/admin.route'));
+app.use('/api/paypal', require('./src/routes/paypal.route'));
 
 const PORT = process.env.PORT || 4000 ;
 app.listen(PORT, () => {
