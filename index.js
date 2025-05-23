@@ -1,44 +1,29 @@
 const express = require('express');
+
+// ✅ Solo usa .env en desarrollo
 if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config(); // ✅ Solo carga .env en desarrollo
+  require('dotenv').config();
 }
+
 const cors = require('cors');
 const cron = require('node-cron');
 const { dbMysqlConnection } = require('./src/database/db.mysql.config');
-
-//create express server
-const app = express();
-
 const path = require('path');
 
-//database sync
+const app = express();
+
+// 🔄 Conexión y sincronización con MySQL
 const db = dbMysqlConnection();
-db.sequelize.sync({alter : true}).then(() => {
-    require('./src/database/db.mysql.data.default')(db);
-}); 
-
-
-//CORS
-app.use(cors());
-
-//Directorio publico
-
-app.use(express.static(__dirname + '/public'));
-
-//read and parse body
-app.use(express.json());
-
-
-
-app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, './public/index.html'), function (err,){
-        if (err) {
-            res.status(500).send(err);
-        }
-    } );
+db.sequelize.sync({ alter: true }).then(() => {
+  require('./src/database/db.mysql.data.default')(db);
 });
 
-//ROUTES
+// Middlewares
+app.use(cors());
+app.use(express.json());
+app.use(express.static(__dirname + '/public'));
+
+// Rutas
 app.use('/api/auth', require('./src/routes/auth.route'));
 app.use('/api/categories', require('./src/routes/categories.route'));
 app.use('/api/products', require('./src/routes/products.route'));
@@ -48,9 +33,17 @@ app.use('/api/user', require('./src/routes/user.route'));
 app.use('/api/admin', require('./src/routes/admin.route'));
 app.use('/api/paypal', require('./src/routes/paypal.route'));
 
-const PORT = process.env.PORT || 4000 ;
+// Catch-all para SPA
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/index.html'), function (err) {
+    if (err) {
+      res.status(500).send(err);
+    }
+  });
+});
+
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
-    console.log(`Corriendo servidor en el puerto ${process.env.PORT}`);
-    console.log(`entorno ${process.env.NODE_ENV}`);
-    
-} )
+  console.log(`✅ Servidor corriendo en el puerto ${PORT}`);
+  console.log(`🌐 Entorno: ${process.env.NODE_ENV}`);
+});
