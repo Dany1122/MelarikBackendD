@@ -10,11 +10,22 @@ module.exports = async ( db ) => {
     const Cart = db.cart;
     const CartItem = db.cartItem;
 
+    const hashedPassword = await bcrypt.hash('anhel123456', 10);
     Role.findOrCreate({ where : { id : 1}, defaults : { id : 1, role_dsc: 'Admin', active : true, deleted : false}});
     Role.findOrCreate({ where : { id : 2}, defaults : { id : 2, role_dsc: 'User', active : true, deleted : false}});
     //User.findOrCreate({ where : { id : 101}, defaults : { id : 101, name : 'Admin', email : 'admin@admin.com' , password : 'admin123456', role_id : TypeRole.ADMIN, active : true}});
     //User.findOrCreate({ where : { id : 100}, defaults : { id : 100, name : 'Danitza Ramos', email : 'dani@dani.com' , password : 'dani1234', role_id : TypeRole.ADMIN, active : true}});
-    User.findOrCreate({ where: { id : 102 }, defaults: { id : 102, name: 'anhel', email: 'anhel@anhel.com', password: bcrypt.hash('anhel123456', 10), role_id: TypeRole.ADMIN, active: true}});
+    await User.findOrCreate({
+        where: { id: 102 },
+        defaults: {
+            id: 102,
+            name: 'anhel',
+            email: 'anhel@anhel.com',
+            password: hashedPassword, // ✅ Ahora es string
+            role_id: TypeRole.ADMIN,
+            active: true
+        }
+        });
 
     Categories.findOrCreate({ where : { id : 1}, defaults : { id: 1, name_category : 'Prebases' }});
     Categories.findOrCreate({ where : { id : 2}, defaults : { id: 2, name_category : 'Bases de maquillaje' }});
