@@ -14,6 +14,13 @@ const dbMysqlConnection = () => {
         const HOST = isDev ? process.env.DB_MYSQL_HOST_DEV : process.env.MYSQLHOST;
         const PORT = isDev ? process.env.DB_MYSQL_PORT_DEV : process.env.MYSQLPORT;
 
+        console.log('🔧 DB config usada en producción:', {
+        DB,
+        USER,
+        PASSWORD,
+        HOST,
+        PORT
+        });
         const sequelize =  new Sequelize(DB, USER, PASSWORD,{
             host : HOST,
             dialect : 'mysql',
