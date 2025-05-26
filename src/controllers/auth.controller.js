@@ -145,7 +145,6 @@ const sendResetLink = async (req, res = response) => {
 
         await sendEmail(
             email,
-            '',
             'Solicitud de restablecimiento de contraseña',
             `Haga clic en este enlace para restablecer su contraseña: <a href="${link}">Restablecer contraseña</a>`
         )

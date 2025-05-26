@@ -6,13 +6,11 @@ const dbMysqlConnection = () => {
         
         console.log('process.env.NODE_ENV', process.env.NODE_ENV );
 
-        const isDev = process.env.NODE_ENV !== 'production';
-
-        const DB = isDev ? process.env.DB_MYSQL_DATABASE_DEV : process.env.MYSQLDATABASE;
-        const USER = isDev ? process.env.DB_MYSQL_USER_DEV : process.env.MYSQLUSER;
-        const PASSWORD = isDev ? process.env.DB_MYSQL_PASSWORD_DEV : process.env.MYSQLPASSWORD;
-        const HOST = isDev ? process.env.DB_MYSQL_HOST_DEV : process.env.MYSQLHOST;
-        const PORT = isDev ? process.env.DB_MYSQL_PORT_DEV : process.env.MYSQLPORT;
+        const DB = process.env.MYSQLDATABASE;
+        const USER = process.env.MYSQLUSER;
+        const PASSWORD = process.env.MYSQLPASSWORD;
+        const HOST = process.env.MYSQLHOST;
+        const PORT = process.env.MYSQLPORT;
 
         console.log('🔧 DB config usada en producción:', {
         DB,

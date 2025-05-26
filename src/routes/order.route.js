@@ -17,10 +17,21 @@ router.post('/create',
         check('deliveryOption', 'el tipo de entrega es obligatorio').not().isEmpty(),
         check('coupon', 'El cupón es obligatorio').not().isEmpty(),
         check('paymentMethod', 'El método de pago es obligatorio').not().isEmpty(),
-        check('nameOnCard', 'El nombre en la tarjeta de crédito es obligatorio').not().isEmpty(),
-        check('creditCardNumber', 'El número de tarjeta de crédito es obligatorio').not().isEmpty(),
-        check('creditCardExpiry', 'La fecha de expiración de la tarjeta de crédito es obligatoria').not().isEmpty(),
-        check('creditCardCVV', 'El CVV de la tarjeta de crédito es obligatorio').not().isEmpty(),
+        check('nameOnCard', 'El nombre en la tarjeta de crédito es obligatorio')
+        .if((value, { req }) => req.body.paymentMethod !== 'paypal')
+        .not().isEmpty(),
+
+        check('creditCardNumber', 'El número de tarjeta de crédito es obligatorio')
+        .if((value, { req }) => req.body.paymentMethod !== 'paypal')
+        .not().isEmpty(),
+
+        check('creditCardExpiry', 'La fecha de expiración de la tarjeta de crédito es obligatoria')
+        .if((value, { req }) => req.body.paymentMethod !== 'paypal')
+        .not().isEmpty(),
+
+        check('creditCardCVV', 'El CVV de la tarjeta de crédito es obligatorio')
+        .if((value, { req }) => req.body.paymentMethod !== 'paypal')
+        .not().isEmpty(),
 
         fieldValidator
     ],

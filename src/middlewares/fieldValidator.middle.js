@@ -8,6 +8,7 @@ const fieldValidator = (req, res = response, next) => {
     const errors = validationResult( req );
 
     if (!errors.isEmpty()) {
+        console.log('Errores de validación:', errors.array());
         return httpUtilesService.httpResponse(res, HTTP_STATUS.BAD_REQUEST, false, {
             errors : errors.mapped()
         })
